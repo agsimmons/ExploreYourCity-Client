@@ -4,4 +4,6 @@ package com.example.exploreyourcity;
 public final class Constants {
     public static final int MIN_USERNAME_LENGTH = 3;
     public static final int MAX_USERNAME_LENGTH = 18;
+
+    public static final int MIN_PASSWORD_LENGTH = 8;
 }

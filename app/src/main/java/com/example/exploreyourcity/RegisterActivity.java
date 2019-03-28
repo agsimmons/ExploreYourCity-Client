@@ -38,7 +38,7 @@ public class RegisterActivity extends AppCompatActivity {
                         usernameField.getText().toString())) { return; }
 
                 // Check that password matches confirmation
-                if (!passwordsEqual(passwordField.getText().toString(),
+                if (!passwordValid(passwordField.getText().toString(),
                         passwordConfirmationField.getText().toString())) { return; }
 
                 // If entered values are valid, send request to API
@@ -94,11 +94,17 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    private boolean passwordsEqual(String password, String passwordConfirmation) {
+    private boolean passwordValid(String password, String passwordConfirmation) {
         if (!password.equals(passwordConfirmation)) {
             Utilities.makeToast(getApplicationContext(), "Password does not match confirmation");
             return false;
         }
+
+        if (password.length() < Constants.MIN_PASSWORD_LENGTH) {
+            Utilities.makeToast(getApplicationContext(), "Password is not long enough");
+            return false;
+        }
+
         return true;
     }
 }
