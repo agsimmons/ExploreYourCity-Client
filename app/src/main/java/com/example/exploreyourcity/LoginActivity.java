@@ -7,21 +7,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity {
-
-    // TODO: Make generic between LoginActivity and RegisterActivity
-    private static final int MIN_USERNAME_LENGTH = 3;
-    private static final int MAX_USERNAME_LENGTH = 18;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +30,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Check that username is valid
-                if (!usernameValid(usernameField.getText().toString())) { return; }
+                if (!Utilities.usernameValid(getApplicationContext(),
+                        usernameField.getText().toString())) { return; }
 
                 // If entered values are valid, send request to API
                 // TODO: Replace with HTTP basic auth
@@ -71,9 +66,7 @@ public class LoginActivity extends AppCompatActivity {
                             @Override
                             public void onErrorResponse(VolleyError error) {
                                 Log.e("Request Error", new String(error.networkResponse.data));
-                                Toast.makeText(getApplicationContext(),
-                                        "There was an error with your request",
-                                        Toast.LENGTH_SHORT).show();
+                                Utilities.makeToast(getApplicationContext(), "There was an error with your request");
                             }
 
                         });
@@ -94,24 +87,4 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    // TODO: Make generic between LoginActivity and RegisterActivity
-    private boolean usernameValid(String username) {
-        if (username.length() > MAX_USERNAME_LENGTH) {
-            Toast.makeText(getApplicationContext(),
-                    "Username is too long",
-                    Toast.LENGTH_SHORT).show();
-
-            return false;
-        }
-
-        if (username.length() < MIN_USERNAME_LENGTH) {
-            Toast.makeText(getApplicationContext(),
-                    "Username is too short",
-                    Toast.LENGTH_SHORT).show();
-
-            return false;
-        }
-
-        return true;
-    }
 }

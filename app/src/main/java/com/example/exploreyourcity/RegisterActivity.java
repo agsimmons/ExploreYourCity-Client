@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -18,10 +17,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class RegisterActivity extends AppCompatActivity {
-
-    // TODO: Make generic between LoginActivity and RegisterActivity
-    private static final int MIN_USERNAME_LENGTH = 3;
-    private static final int MAX_USERNAME_LENGTH = 18;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +34,8 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 // Check that username is valid
-                if (!usernameValid(usernameField.getText().toString())) { return; }
+                if (!Utilities.usernameValid(getApplicationContext(),
+                        usernameField.getText().toString())) { return; }
 
                 // Check that password matches confirmation
                 if (!passwordsEqual(passwordField.getText().toString(),
@@ -77,9 +73,7 @@ public class RegisterActivity extends AppCompatActivity {
                             @Override
                             public void onErrorResponse(VolleyError error) {
                                 Log.e("Request Error", new String(error.networkResponse.data));
-                                Toast.makeText(getApplicationContext(),
-                                        "There was an error with your request",
-                                        Toast.LENGTH_SHORT).show();
+                                Utilities.makeToast(getApplicationContext(), "There was an error with your request");
                             }
 
                         });
@@ -100,36 +94,11 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    // TODO: Make generic between LoginActivity and RegisterActivity
-    private boolean usernameValid(String username) {
-        if (username.length() > MAX_USERNAME_LENGTH) {
-            Toast.makeText(getApplicationContext(),
-                    "Username is too long",
-                    Toast.LENGTH_SHORT).show();
-
-            return false;
-        }
-
-        if (username.length() < MIN_USERNAME_LENGTH) {
-            Toast.makeText(getApplicationContext(),
-                    "Username is too short",
-                    Toast.LENGTH_SHORT).show();
-
-            return false;
-        }
-
-        return true;
-    }
-
     private boolean passwordsEqual(String password, String passwordConfirmation) {
-        if (password.equals(passwordConfirmation)) {
-            return true;
-        } else {
-            Toast.makeText(getApplicationContext(),
-                    "Password does not match confirmation",
-                    Toast.LENGTH_SHORT).show();
-
+        if (!password.equals(passwordConfirmation)) {
+            Utilities.makeToast(getApplicationContext(), "Password does not match confirmation");
             return false;
         }
+        return true;
     }
 }
