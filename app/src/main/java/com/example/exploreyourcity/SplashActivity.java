@@ -1,12 +1,15 @@
 package com.example.exploreyourcity;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 // TODO: Wait for selection before closing the app
 
@@ -22,10 +25,16 @@ public class SplashActivity extends AppCompatActivity {
         boolean hasPermissions = hasPermissions();
 
         if (hasPermissions) {
-            // TODO: Check if credentials already exist. If they do, login automatically. If not, go to login.
-            Intent registerIntent = new Intent(getApplicationContext(),
-                    RegisterActivity.class);
-            startActivity(registerIntent);
+            // Check if credentials already exist. If they do, login automatically. If not, go to login.
+            SharedPreferences sp = getSharedPreferences("EYCPrefs", Context.MODE_PRIVATE);
+            if (sp.contains("USERNAME") && sp.contains("PASSWORD")){
+                // This just assumes any username and password saved in sp work
+                Intent mapIntent = new Intent(getApplicationContext(), MapActivity.class);
+                startActivity(mapIntent);
+            } else {
+                Intent registerIntent = new Intent(getApplicationContext(), RegisterActivity.class);
+                startActivity(registerIntent);
+            }
         }
         finish();
     }
