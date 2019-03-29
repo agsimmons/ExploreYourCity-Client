@@ -59,11 +59,11 @@ public class RegisterActivity extends AppCompatActivity {
                             public void onResponse(JSONObject response) {
                                 Log.i("RequestResponse", response.toString());
 
-                                // TODO: Store credentials on disk
-                                // TODO: Pass new user ID to intent
-                                Intent mapIntent = new Intent(getApplicationContext(),
-                                        MapActivity.class);
-                                startActivity(mapIntent);
+                                Utilities.makeToast(getApplicationContext(), "Account created!");
+
+                                Intent loginIntent = new Intent(getApplicationContext(),
+                                        LoginActivity.class);
+                                startActivity(loginIntent);
                                 finish();
                             }
 
