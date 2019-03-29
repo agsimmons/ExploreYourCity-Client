@@ -68,7 +68,6 @@ public class LoginActivity extends AppCompatActivity {
                                 // Store credentials on disk
                                 SharedPreferences.Editor sp_editor = getSharedPreferences("EYCPrefs", Context.MODE_PRIVATE).edit();
                                 if (response.has("username")) {
-                                    Log.i("ETHAN", "response.has()");
                                     sp_editor.putString("USERNAME", username);
                                     sp_editor.putString("PASSWORD", password);
                                     sp_editor.apply();
