@@ -115,60 +115,6 @@ public class AvailableMissionListActivity extends AppCompatActivity {
 
         };
 
-//        JsonArrayRequest missionListRequest = new JsonArrayRequest(Request.Method.POST,
-//                "https://exploreyourcity.xyz/api/missions/available/",
-//                requestParameters,
-//                new Response.Listener<JSONArray>() {
-//                    @Override
-//                    public void onResponse(JSONArray response) {
-//                        Log.i("RequestResponse", response.toString());
-//
-//                        ArrayList<Mission> missions = new ArrayList<>();
-//                        for (int i = 0; i < response.length(); i++) {
-//
-//                            JSONObject missionData = null;
-//
-//                            try {
-//                                missionData = (JSONObject) response.get(i);
-//                            } catch (JSONException e) {
-//                                e.printStackTrace();
-//                            }
-//
-//                            Mission mission = new Mission(missionData);
-//                            missions.add(mission);
-//
-//                        }
-//
-//                        Log.i("Deserialization", missions.toString());
-//
-//                        // Add list elements to RecyclerView
-//                        RecyclerView recyclerView = findViewById(R.id.available_mission_list_recycler_view);
-//                        MissionAdapter missionAdapter = new MissionAdapter(getApplicationContext(), missions);
-//                        recyclerView.setAdapter(missionAdapter);
-//                        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-//
-//                    }
-//                },
-//                new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        Log.e("Request Error", new String(error.networkResponse.data));
-//                        Utilities.makeToast(getApplicationContext(), "There was an error with your request");
-//                    }
-//                }) {
-//
-//            public Map<String, String> getHeaders() throws AuthFailureError {
-//                SharedPreferences sp = getSharedPreferences("EYCPrefs", Context.MODE_PRIVATE);
-//
-//                HashMap<String, String> params = new HashMap<>();
-//                String creds = String.format("%s:%s", sp.getString("USERNAME", ""), sp.getString("PASSWORD", ""));
-//                String auth = "Basic " + Base64.encodeToString(creds.getBytes(), Base64.NO_WRAP);
-//                params.put("Authorization", auth);
-//                return params;
-//            }
-//
-//        };
-
         RequestQueueSingleton.getInstance(getApplicationContext()).
                 addToRequestQueue(missionListRequest);
     }
