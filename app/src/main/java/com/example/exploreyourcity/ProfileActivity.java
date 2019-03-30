@@ -56,27 +56,68 @@ public class ProfileActivity extends AppCompatActivity {
         // TODO: make these do something
         Button completedMissionsButton = (Button) findViewById(R.id.profile_activity_completed_missions_button);
         Button friendsListButton = (Button) findViewById(R.id.profile_activity_friends_list_button);
+
         Button deleteAccountButton = (Button) findViewById(R.id.profile_activity_delete_account_button);
+        deleteAccountButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                // TODO: prompt the user if they really want to delete account
+                deleteAccount();
+                logout();
+            }
+        });
 
         Button logoutButton = (Button) findViewById(R.id.profile_activity_logout_button);
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                // Clear credentials from SharedPreferences
-                SharedPreferences.Editor sp_editor = getSharedPreferences("EYCPrefs", Context.MODE_PRIVATE).edit();
-                sp_editor.clear();
-                sp_editor.apply();
-
-                // Start RegisterActivity while clearing all other running activities
-                Intent registerIntent = new Intent(getApplicationContext(),
-                        RegisterActivity.class);
-                registerIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(registerIntent);
-                finish();
+                logout();
             }
         });
 
+    }
+
+    private void logout() {
+        // Clear credentials from SharedPreferences
+        SharedPreferences.Editor sp_editor = getSharedPreferences("EYCPrefs", Context.MODE_PRIVATE).edit();
+        sp_editor.clear();
+        sp_editor.apply();
+
+        // Start RegisterActivity while clearing all other running activities
+        Intent registerIntent = new Intent(getApplicationContext(),
+                RegisterActivity.class);
+        registerIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(registerIntent);
+        finish();
+    }
+
+    private void deleteAccount() {
+        SharedPreferences sp = getSharedPreferences("EYCPrefs", Context.MODE_PRIVATE);
+
+        // Save credentials as the logout ends up happening first due to asyncronous volley
+        final String username = sp.getString("USERNAME", "");
+        final String password = sp.getString("PASSWORD", "");
+
+        Log.i("ProfileActivity: ", "deleteAccount()");
+
+        JsonObjectRequest missionListRequest = new JsonObjectRequest(Request.Method.DELETE,
+                "https://exploreyourcity.xyz/api/users/remove_account/",
+                null,
+                null,
+                null) {
+
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> params = new HashMap<>();
+                String creds = String.format("%s:%s", username, password);
+                String auth = "Basic " + Base64.encodeToString(creds.getBytes(), Base64.NO_WRAP);
+                params.put("Authorization", auth);
+                return params;
+            }
+
+        };
+
+        RequestQueueSingleton.getInstance(getApplicationContext()).
+                addToRequestQueue(missionListRequest);
     }
 
     private void getNumCompletedMissions() {
@@ -88,14 +129,14 @@ public class ProfileActivity extends AppCompatActivity {
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        Log.i("RequestResponse", "getNumCompletedMissions(): completed missions: " +response.length());
+                        Log.i("ProfileActivity: ", "getNumCompletedMissions(): completed missions: " +response.length());
                         missionsCompleteTextView.setText("Missions Completed: " +response.length());
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.e("Request Error", new String(error.networkResponse.data));
+                        Log.e("ProfileActivity: ", new String(error.networkResponse.data));
                         Utilities.makeToast(getApplicationContext(), "There was an error with your request");
                     }
                 }) {
@@ -125,19 +166,19 @@ public class ProfileActivity extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.i("RequestResponse", response.toString());
+                        Log.i("ProfileActivity: ", "getPoints()"+response.toString());
 
                         try {
                             pointsTextView.setText("Score: "+response.getString("score"));
                         } catch (JSONException e) {
-                            Log.i("RequestResponse", " getScore(): couldn't parse score");
+                            Log.i("ProfileActivity: ", "getPoints(): couldn't parse score");
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.e("Request Error", new String(error.networkResponse.data));
+                        Log.e("ProfileActivity: ", new String(error.networkResponse.data));
                         Utilities.makeToast(getApplicationContext(), "There was an error with your request");
                     }
                 }) {
