@@ -8,13 +8,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
 import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -23,7 +16,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.example.exploreyourcity.adapters.MissionAdapter;
 import com.example.exploreyourcity.models.Mission;
-import com.example.exploreyourcity.models.Category;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -71,13 +63,11 @@ public class AvailableMissionListActivity extends AppCompatActivity {
 
                         Log.i("Deserialization", missions.toString());
 
-                        // TODO: Add list elements to RecyclerView
+                        // Add list elements to RecyclerView
                         RecyclerView recyclerView = findViewById(R.id.available_mission_list_recycler_view);
                         MissionAdapter missionAdapter = new MissionAdapter(getApplicationContext(), missions);
                         recyclerView.setAdapter(missionAdapter);
                         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-
-
 
                     }
                 },

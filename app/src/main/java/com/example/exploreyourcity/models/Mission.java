@@ -21,6 +21,10 @@ public class Mission {
         }
     }
 
+    public String getName() {
+        return this.category.getName() + " " + this.id;
+    }
+
     public int getId() {
         return this.id;
     }
