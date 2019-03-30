@@ -46,19 +46,9 @@ public class LoginActivity extends AppCompatActivity {
                 username = usernameField.getText().toString();
                 password = passwordField.getText().toString();
 
-                // If entered values are valid, send request to API
-                // TODO: Replace with HTTP basic auth
-                JSONObject requestParameters = new JSONObject();
-//                try {
-//                    requestParameters.put("username", usernameField.getText().toString());
-//                    requestParameters.put("password", passwordField.getText().toString());
-//                } catch (JSONException e) {
-//                    Log.e("JSONException", e.getMessage());
-//                }
-
                 JsonObjectRequest registerRequest = new JsonObjectRequest(Request.Method.GET,
                         "https://exploreyourcity.xyz/api/players/myself/", // TODO: Replace hardcoded api root
-                        requestParameters,
+                        null,
                         new Response.Listener<JSONObject>() {
 
                             @Override
@@ -72,7 +62,7 @@ public class LoginActivity extends AppCompatActivity {
                                     sp_editor.putString("PASSWORD", password);
                                     sp_editor.apply();
                                 }
-                                // TODO: Pass user ID to intent
+
                                 Intent mapIntent = new Intent(getApplicationContext(),
                                         MapActivity.class);
                                 startActivity(mapIntent);
