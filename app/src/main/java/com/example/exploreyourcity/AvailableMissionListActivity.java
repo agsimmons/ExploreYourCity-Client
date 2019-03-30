@@ -14,6 +14,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.example.exploreyourcity.adapters.MissionAdapter;
 import com.example.exploreyourcity.models.Mission;
 
@@ -37,12 +38,17 @@ public class AvailableMissionListActivity extends AppCompatActivity {
 
     private void getMissionList() {
 
-        JsonArrayRequest missionListRequest = new JsonArrayRequest(Request.Method.GET,
-                "https://exploreyourcity.xyz/api/missions/",
-                null,
-                new Response.Listener<JSONArray>() {
+        StringRequest missionListRequest = new StringRequest(Request.Method.POST,
+                "https://exploreyourcity.xyz/api/missions/available/",
+                new Response.Listener<String>() {
                     @Override
-                    public void onResponse(JSONArray response) {
+                    public void onResponse(String stringResponse) {
+                        JSONArray response = null;
+                        try {
+                            response = new JSONArray(stringResponse);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                         Log.i("RequestResponse", response.toString());
 
                         ArrayList<Mission> missions = new ArrayList<>();
@@ -78,7 +84,22 @@ public class AvailableMissionListActivity extends AppCompatActivity {
                         Utilities.makeToast(getApplicationContext(), "There was an error with your request");
                     }
                 }) {
+            @Override
+            public Map<String, String> getParams() {
+                SharedPreferences sp = getSharedPreferences("EYCPrefs", Context.MODE_PRIVATE);
 
+                Map<String, String>  params = new HashMap<String, String>();
+
+                params.put("latitude", "" + sp.getString("CURRENT_LATITUDE", "90.0"));
+                params.put("longitude", "" + sp.getString("CURRENT_LONGITUDE", "90.0"));
+
+                Log.d("CurrentLocation", "(" + sp.getString("CURRENT_LATITUDE", "0.0") + ", " + sp.getString("CURRENT_LONGITUDE", "0.0") + ")");
+
+                return params;
+
+            }
+
+            @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 SharedPreferences sp = getSharedPreferences("EYCPrefs", Context.MODE_PRIVATE);
 
