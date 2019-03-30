@@ -1,6 +1,7 @@
 package com.example.exploreyourcity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -26,7 +27,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AvailableMissionListActivity extends AppCompatActivity {
+public class AvailableMissionListActivity extends AppCompatActivity implements MissionAdapter.OnMissionListener {
+
+    private ArrayList<Mission> missions;
+    private RecyclerView recyclerView;
+    private MissionAdapter missionAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +56,7 @@ public class AvailableMissionListActivity extends AppCompatActivity {
                         }
                         Log.i("RequestResponse", response.toString());
 
-                        ArrayList<Mission> missions = new ArrayList<>();
+                        missions = new ArrayList<>();
                         for (int i = 0; i < response.length(); i++) {
 
                             JSONObject missionData = null;
@@ -69,11 +74,7 @@ public class AvailableMissionListActivity extends AppCompatActivity {
 
                         Log.i("Deserialization", missions.toString());
 
-                        // Add list elements to RecyclerView
-                        RecyclerView recyclerView = findViewById(R.id.available_mission_list_recycler_view);
-                        MissionAdapter missionAdapter = new MissionAdapter(getApplicationContext(), missions);
-                        recyclerView.setAdapter(missionAdapter);
-                        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                        initRecyclerView();
 
                     }
                 },
@@ -116,4 +117,22 @@ public class AvailableMissionListActivity extends AppCompatActivity {
                 addToRequestQueue(missionListRequest);
     }
 
+    private void initRecyclerView() {
+        // Add list elements to RecyclerView
+        recyclerView = findViewById(R.id.available_mission_list_recycler_view);
+        missionAdapter = new MissionAdapter(missions, this);
+        recyclerView.setAdapter(missionAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+    }
+
+    @Override
+    public void onMissionClick(int position) {
+        // Switch to intent here
+        Mission mission = missions.get(position);
+        Log.d("Recycler", "Clicked on mission " + mission.toString());
+
+        Intent missionDetailIntent = new Intent(getApplicationContext(), MissionDetailActivity.class);
+        missionDetailIntent.putExtra("MISSION_ID", mission.getId());
+        startActivity(missionDetailIntent);
+    }
 }
