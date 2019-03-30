@@ -12,7 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LoginActivity"></activity>
+        <activity android:name=".MissionDetailActivity" />
+        <activity android:name=".AvailableMissionListActivity" />
+        <activity android:name=".LoginActivity" />
         <activity android:name=".MapActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".SplashActivity">
@@ -25,10 +27,14 @@
 
         <!-- needed per https://stackoverflow.com/questions/50461881/java-lang-noclassdeffounderrorfailed-resolution-of-lorg-apache-http-protocolve -->
         <!-- TODO: Verify that we need this -->
-        <uses-library android:name="org.apache.http.legacy" android:required="false" />
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
 
         <!-- Our Google Maps API key -->
-        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyDHqBdySdfEGwzje_-LFwMbv7R5PLWnTac" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDHqBdySdfEGwzje_-LFwMbv7R5PLWnTac" />
     </application>
 
 </manifest>
