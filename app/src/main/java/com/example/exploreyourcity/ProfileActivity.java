@@ -3,7 +3,9 @@ package com.example.exploreyourcity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
@@ -57,13 +59,31 @@ public class ProfileActivity extends AppCompatActivity {
         Button completedMissionsButton = (Button) findViewById(R.id.profile_activity_completed_missions_button);
         Button friendsListButton = (Button) findViewById(R.id.profile_activity_friends_list_button);
 
+        // Setup the Delete Account Dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Delete account?");
+        builder.setMessage("Are you sure you want to delete your account? This is irreversible!");
+
+        builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                deleteAccount();
+                logout();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Do nothing
+            }
+        });
+        final AlertDialog deleteDialog = builder.create();
+
         Button deleteAccountButton = (Button) findViewById(R.id.profile_activity_delete_account_button);
         deleteAccountButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                // TODO: prompt the user if they really want to delete account
-                deleteAccount();
-                logout();
+                deleteDialog.show();
             }
         });
 
