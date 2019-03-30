@@ -90,11 +90,8 @@ public class AvailableMissionListActivity extends AppCompatActivity {
 
                 Map<String, String>  params = new HashMap<String, String>();
 
-//                params.put("latitude","42.336113");
-//                params.put("longitude", "-71.095423");
-
-                params.put("latitude", "" + sp.getString("CURRENT_LATITUDE", "0.0"));
-                params.put("longitude", "" + sp.getString("CURRENT_LONGITUDE", "0.0"));
+                params.put("latitude", "" + sp.getString("CURRENT_LATITUDE", "90.0"));
+                params.put("longitude", "" + sp.getString("CURRENT_LONGITUDE", "90.0"));
 
                 Log.d("CurrentLocation", "(" + sp.getString("CURRENT_LATITUDE", "0.0") + ", " + sp.getString("CURRENT_LONGITUDE", "0.0") + ")");
 
