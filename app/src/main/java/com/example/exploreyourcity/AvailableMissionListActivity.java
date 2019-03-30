@@ -1,15 +1,27 @@
 package com.example.exploreyourcity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.example.exploreyourcity.adapters.MissionAdapter;
 import com.example.exploreyourcity.models.Mission;
 import com.example.exploreyourcity.models.Category;
 
@@ -28,13 +40,10 @@ public class AvailableMissionListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_available_mission_list);
 
-        ArrayList<Mission> missions = getMissionList();
-        Log.d("Ayy", missions.toString());
+        getMissionList();
     }
 
-    private ArrayList<Mission> getMissionList() {
-
-        // TODO: Specify Credentials
+    private void getMissionList() {
 
         JsonArrayRequest missionListRequest = new JsonArrayRequest(Request.Method.GET,
                 "https://exploreyourcity.xyz/api/missions/",
@@ -62,7 +71,13 @@ public class AvailableMissionListActivity extends AppCompatActivity {
 
                         Log.i("Deserialization", missions.toString());
 
-                        // TODO: Show list of elements
+                        // TODO: Add list elements to RecyclerView
+                        RecyclerView recyclerView = findViewById(R.id.available_mission_list_recycler_view);
+                        MissionAdapter missionAdapter = new MissionAdapter(getApplicationContext(), missions);
+                        recyclerView.setAdapter(missionAdapter);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+
+
 
                     }
                 },
@@ -75,8 +90,10 @@ public class AvailableMissionListActivity extends AppCompatActivity {
                 }) {
 
             public Map<String, String> getHeaders() throws AuthFailureError {
+                SharedPreferences sp = getSharedPreferences("EYCPrefs", Context.MODE_PRIVATE);
+
                 HashMap<String, String> params = new HashMap<>();
-                String creds = String.format("%s:%s", "andrew", "3:&%bH+=tg6_u~8R'f@A-q*[gC{~k2+q");
+                String creds = String.format("%s:%s", sp.getString("USERNAME", ""), sp.getString("PASSWORD", ""));
                 String auth = "Basic " + Base64.encodeToString(creds.getBytes(), Base64.NO_WRAP);
                 params.put("Authorization", auth);
                 return params;
@@ -86,7 +103,6 @@ public class AvailableMissionListActivity extends AppCompatActivity {
 
         RequestQueueSingleton.getInstance(getApplicationContext()).
                 addToRequestQueue(missionListRequest);
-
-        return new ArrayList<>(); // TODO
     }
+
 }

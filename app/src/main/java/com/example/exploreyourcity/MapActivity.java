@@ -1,7 +1,10 @@
 package com.example.exploreyourcity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -22,6 +25,16 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         mapFragment = (SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        Button availableMissionListButton = (Button) findViewById(R.id.map_activity_available_mission_list_button);
+        availableMissionListButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent availableMissionListIntent = new Intent(getApplicationContext(),
+                        AvailableMissionListActivity.class);
+                startActivity(availableMissionListIntent);
+            }
+        });
     }
 
     @Override
