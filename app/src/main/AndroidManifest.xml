@@ -22,6 +22,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- needed per https://stackoverflow.com/questions/50461881/java-lang-noclassdeffounderrorfailed-resolution-of-lorg-apache-http-protocolve -->
+        <!-- TODO: Verify that we need this -->
+        <uses-library android:name="org.apache.http.legacy" android:required="false" />
+
+        <!-- Our Google Maps API key -->
+        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyDHqBdySdfEGwzje_-LFwMbv7R5PLWnTac" />
     </application>
 
 </manifest>
