@@ -29,10 +29,12 @@ public class SplashActivity extends AppCompatActivity {
             SharedPreferences sp = getSharedPreferences("EYCPrefs", Context.MODE_PRIVATE);
             if (sp.contains("USERNAME") && sp.contains("PASSWORD")){
                 // This just assumes any username and password saved in sp work
-                Intent mapIntent = new Intent(getApplicationContext(), MapActivity.class);
+                Intent mapIntent = new Intent(getApplicationContext(),
+                        MapActivity.class);
                 startActivity(mapIntent);
             } else {
-                Intent registerIntent = new Intent(getApplicationContext(), RegisterActivity.class);
+                Intent registerIntent = new Intent(getApplicationContext(),
+                        RegisterActivity.class);
                 startActivity(registerIntent);
             }
         }
