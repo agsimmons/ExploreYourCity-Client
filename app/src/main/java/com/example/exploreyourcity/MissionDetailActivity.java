@@ -36,7 +36,15 @@ import java.util.Map;
 
 public class MissionDetailActivity extends AppCompatActivity {
 
+    private static final String TAG = "MissionDetailActivity";
+
     private int missionID;
+
+    // Available Modes:
+    // AVAILABLE - Allows user to add the mission
+    // CURRENT - Allows user to drop the mission
+
+    private String mode;
 
     private ArrayList<Objective> objectives;
     private RecyclerView recyclerView;
@@ -47,18 +55,39 @@ public class MissionDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mission_detail);
 
-        missionID = getIntent().getIntExtra("MISSION_ID", -1);
         // TODO: Error if missionID is -1, indicating that a mission ID was not passed
+        missionID = getIntent().getIntExtra("MISSION_ID", -1);
 
-        // TODO: Make this function as either an add mission button or a drop mission button depending on where this intent was created from
+        mode = getIntent().getStringExtra("MODE");
+
+        // Assign button text and functionality
+        Button addDropMissionButton = (Button) findViewById(R.id.mission_detail_add_drop_mission_button);
+        if (mode.equals("AVAILABLE")) {
+
+            addDropMissionButton.setText("Add Mission");
+            addDropMissionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addMission();
+                }
+            });
+            
+        } else if (mode.equals("CURRENT")) {
+
+            addDropMissionButton.setText("Drop Mission");
+            addDropMissionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dropMission();
+                }
+            });
+            
+        } else {
+            Log.d(TAG, "Invalid MODE variable");
+            addDropMissionButton.setText("Error");
+        }
         // Attach functionality to add mission button
-        Button addMissionButton = (Button) findViewById(R.id.mission_detail_add_mission_button);
-        addMissionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addMission();
-            }
-        });
+
 
         // Fill out mission details
         getMissionDetails(missionID);
@@ -68,6 +97,9 @@ public class MissionDetailActivity extends AppCompatActivity {
 
         // Fill out objective recycler view
 //        initObjectiveRecyclerView();
+    }
+
+    private void dropMission() {
     }
 
     private void getObjectives(int missionID) {

@@ -132,6 +132,7 @@ public class AvailableMissionListActivity extends AppCompatActivity implements M
 
         Intent missionDetailIntent = new Intent(getApplicationContext(), MissionDetailActivity.class);
         missionDetailIntent.putExtra("MISSION_ID", mission.getId());
+        missionDetailIntent.putExtra("MODE", "AVAILABLE");
         startActivity(missionDetailIntent);
     }
 }
