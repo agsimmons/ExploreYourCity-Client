@@ -82,6 +82,16 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 startActivity(availableMissionListIntent);
             }
         });
+
+        Button profileButton = (Button) findViewById(R.id.map_activity_profile_button);
+        profileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent profileIntent = new Intent(getApplicationContext(),
+                        ProfileActivity.class);
+                startActivity(profileIntent);
+            }
+        });
     }
 
     @Override
