@@ -43,6 +43,7 @@ public class MissionDetailActivity extends AppCompatActivity {
     // Available Modes:
     // AVAILABLE - Allows user to add the mission
     // CURRENT - Allows user to drop the mission
+    // COMPLETED - Disables the button
 
     private String mode;
 
@@ -82,9 +83,15 @@ public class MissionDetailActivity extends AppCompatActivity {
                 }
             });
             
+        } else if (mode.equals("COMPLETED")) {
+
+            addDropMissionButton.setText("Mission Complete!");
+            addDropMissionButton.setEnabled(false);
+
         } else {
             Log.d(TAG, "Invalid MODE variable");
             addDropMissionButton.setText("Error");
+            addDropMissionButton.setEnabled(false);
         }
         // Attach functionality to add mission button
 
