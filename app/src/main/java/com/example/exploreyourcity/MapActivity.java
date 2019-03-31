@@ -20,6 +20,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
+    private LocationManager locationManager;
+    private LocationListener locationListener;
+
     private GoogleMap gMap;
     private SupportMapFragment mapFragment;
 
@@ -28,9 +31,39 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
-        // Get location listener set up
-        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        LocationListener locationListener = new LocationListener() {
+        initializeLocationServices();
+
+        // Get Google map set up
+        mapFragment = (SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
+        // Set onClickListenter for Available Missions button
+        Button availableMissionListButton = (Button) findViewById(R.id.map_activity_available_mission_list_button);
+        availableMissionListButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent availableMissionListIntent = new Intent(getApplicationContext(),
+                        MissionListActivity.class);
+                availableMissionListIntent.putExtra("MODE", "AVAILABLE");
+                startActivity(availableMissionListIntent);
+            }
+        });
+
+        Button profileButton = (Button) findViewById(R.id.map_activity_profile_button);
+        profileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent profileIntent = new Intent(getApplicationContext(),
+                        ProfileActivity.class);
+                startActivity(profileIntent);
+            }
+        });
+    }
+
+    private void initializeLocationServices() {
+
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
                 SharedPreferences.Editor sp_editor = getSharedPreferences("EYCPrefs", Context.MODE_PRIVATE).edit();
@@ -60,31 +93,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             e.printStackTrace();
         }
 
-        // Get Google map set up
-        mapFragment = (SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-
-        // Set onClickListenter for Available Missions button
-        Button availableMissionListButton = (Button) findViewById(R.id.map_activity_available_mission_list_button);
-        availableMissionListButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent availableMissionListIntent = new Intent(getApplicationContext(),
-                        MissionListActivity.class);
-                availableMissionListIntent.putExtra("MODE", "AVAILABLE");
-                startActivity(availableMissionListIntent);
-            }
-        });
-
-        Button profileButton = (Button) findViewById(R.id.map_activity_profile_button);
-        profileButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent profileIntent = new Intent(getApplicationContext(),
-                        ProfileActivity.class);
-                startActivity(profileIntent);
-            }
-        });
     }
 
     @Override
