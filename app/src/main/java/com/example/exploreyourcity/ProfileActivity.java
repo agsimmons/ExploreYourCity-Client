@@ -51,13 +51,12 @@ public class ProfileActivity extends AppCompatActivity {
         pointsTextView = (TextView) findViewById(R.id.profile_activity_points_textview);
         getPoints();
 
-        // Populate Missions Comeplete Number textView
+        // Populate Missions Complete Number textView
         missionsCompleteTextView = (TextView) findViewById(R.id.profile_activity_num_missions_complete_textview);
         getNumCompletedMissions();
 
-        // TODO: make this do something
-        Button completedMissionsButton = (Button) findViewById(R.id.profile_activity_completed_missions_button);
 
+        Button completedMissionsButton = (Button) findViewById(R.id.profile_activity_completed_missions_button);
         completedMissionsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,6 +67,7 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
+        // TODO: make this do something
         Button friendsListButton = (Button) findViewById(R.id.profile_activity_friends_list_button);
 
         // Setup the Delete Account Dialog
