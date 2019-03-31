@@ -28,6 +28,8 @@ import java.util.Map;
 
 public class MissionListActivity extends AppCompatActivity implements MissionAdapter.OnMissionListener {
 
+    private String mode;
+
     private ArrayList<Mission> missions;
     private RecyclerView recyclerView;
     private MissionAdapter missionAdapter;
@@ -36,6 +38,8 @@ public class MissionListActivity extends AppCompatActivity implements MissionAda
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mission_list);
+
+        mode = getIntent().getStringExtra("MODE");
 
         getMissionList();
     }
@@ -132,7 +136,7 @@ public class MissionListActivity extends AppCompatActivity implements MissionAda
 
         Intent missionDetailIntent = new Intent(getApplicationContext(), MissionDetailActivity.class);
         missionDetailIntent.putExtra("MISSION_ID", mission.getId());
-        missionDetailIntent.putExtra("MODE", "AVAILABLE");
+        missionDetailIntent.putExtra("MODE", mode);
         startActivity(missionDetailIntent);
     }
 }

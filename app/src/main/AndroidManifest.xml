@@ -14,7 +14,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".ProfileActivity"></activity>
         <activity android:name=".MissionDetailActivity" />
-        <activity android:name=".AvailableMissionListActivity" />
+        <activity android:name=".MissionListActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".MapActivity" />
         <activity android:name=".RegisterActivity" />
