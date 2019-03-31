@@ -1,9 +1,10 @@
 package com.example.exploreyourcity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
@@ -13,7 +14,6 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.example.exploreyourcity.adapters.MissionAdapter;
 import com.example.exploreyourcity.models.Mission;
@@ -26,20 +26,52 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AvailableMissionListActivity extends AppCompatActivity {
+public class MissionListActivity extends AppCompatActivity implements MissionAdapter.OnMissionListener {
+
+    private static final String TAG = "MissionListActivity";
+
+    private String mode;
+    private String player_id;
+
+    private ArrayList<Mission> missions;
+    private RecyclerView recyclerView;
+    private MissionAdapter missionAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_available_mission_list);
+        setContentView(R.layout.activity_mission_list);
+
+        mode = getIntent().getStringExtra("MODE");
+
+        SharedPreferences sp = getSharedPreferences("EYCPrefs", Context.MODE_PRIVATE);
+        player_id = sp.getString("PLAYER_ID", "");
 
         getMissionList();
     }
 
     private void getMissionList() {
 
-        StringRequest missionListRequest = new StringRequest(Request.Method.POST,
-                "https://exploreyourcity.xyz/api/missions/available/",
+        String apiRoot = "https://exploreyourcity.xyz/api/"; // TODO: Replace hardcoded api root
+
+        String endpoint = "";
+        int method = 0;
+        if (mode.equals("AVAILABLE")) {
+            endpoint = apiRoot + "/missions/available/";
+            method = Request.Method.POST;
+        } else if (mode.equals("CURRENT")) {
+            endpoint = apiRoot + "/players/" + player_id + "/active_missions/";
+            method = Request.Method.GET;
+        } else if (mode.equals("COMPLETED")) {
+            endpoint = apiRoot + "/players/" + player_id + "/completed_missions/";
+            method = Request.Method.GET;
+        } else {
+            Log.e(TAG, "Invalid Mode");
+            finish();
+        }
+
+        StringRequest missionListRequest = new StringRequest(method,
+                endpoint,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String stringResponse) {
@@ -51,7 +83,7 @@ public class AvailableMissionListActivity extends AppCompatActivity {
                         }
                         Log.i("RequestResponse", response.toString());
 
-                        ArrayList<Mission> missions = new ArrayList<>();
+                        missions = new ArrayList<>();
                         for (int i = 0; i < response.length(); i++) {
 
                             JSONObject missionData = null;
@@ -69,11 +101,7 @@ public class AvailableMissionListActivity extends AppCompatActivity {
 
                         Log.i("Deserialization", missions.toString());
 
-                        // Add list elements to RecyclerView
-                        RecyclerView recyclerView = findViewById(R.id.available_mission_list_recycler_view);
-                        MissionAdapter missionAdapter = new MissionAdapter(getApplicationContext(), missions);
-                        recyclerView.setAdapter(missionAdapter);
-                        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                        initRecyclerView();
 
                     }
                 },
@@ -116,4 +144,23 @@ public class AvailableMissionListActivity extends AppCompatActivity {
                 addToRequestQueue(missionListRequest);
     }
 
+    private void initRecyclerView() {
+        // Add list elements to RecyclerView
+        recyclerView = findViewById(R.id.mission_list_recycler_view);
+        missionAdapter = new MissionAdapter(missions, this);
+        recyclerView.setAdapter(missionAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+    }
+
+    @Override
+    public void onMissionClick(int position) {
+        // Switch to intent here
+        Mission mission = missions.get(position);
+        Log.d("Recycler", "Clicked on mission " + mission.toString());
+
+        Intent missionDetailIntent = new Intent(getApplicationContext(), MissionDetailActivity.class);
+        missionDetailIntent.putExtra("MISSION_ID", mission.getId());
+        missionDetailIntent.putExtra("MODE", mode);
+        startActivity(missionDetailIntent);
+    }
 }

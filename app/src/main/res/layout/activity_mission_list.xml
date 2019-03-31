@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AvailableMissionListActivity">
+    tools:context=".MissionListActivity">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/available_mission_list_recycler_view"
+        android:id="@+id/mission_list_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </android.support.constraint.ConstraintLayout>

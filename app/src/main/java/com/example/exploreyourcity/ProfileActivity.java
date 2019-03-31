@@ -1,18 +1,18 @@
 package com.example.exploreyourcity;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.AlertDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Button;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -21,8 +21,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 
-import org.json.JSONException;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -55,8 +55,19 @@ public class ProfileActivity extends AppCompatActivity {
         missionsCompleteTextView = (TextView) findViewById(R.id.profile_activity_num_missions_complete_textview);
         getNumCompletedMissions();
 
-        // TODO: make these do something
+        // TODO: make this do something
         Button completedMissionsButton = (Button) findViewById(R.id.profile_activity_completed_missions_button);
+
+        completedMissionsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent completedMissionListIntent = new Intent(getApplicationContext(),
+                        MissionListActivity.class);
+                completedMissionListIntent.putExtra("MODE", "COMPLETED");
+                startActivity(completedMissionListIntent);
+            }
+        });
+
         Button friendsListButton = (Button) findViewById(R.id.profile_activity_friends_list_button);
 
         // Setup the Delete Account Dialog
@@ -144,7 +155,7 @@ public class ProfileActivity extends AppCompatActivity {
         SharedPreferences sp = getSharedPreferences("EYCPrefs", Context.MODE_PRIVATE);
 
         JsonArrayRequest missionListRequest = new JsonArrayRequest(Request.Method.GET,
-                "https://exploreyourcity.xyz/api/players/"+sp.getString("USER_ID", "0")+"/completed_missions/",
+                "https://exploreyourcity.xyz/api/players/" + sp.getString("PLAYER_ID", "0") + "/completed_missions/",
                 null,
                 new Response.Listener<JSONArray>() {
                     @Override
@@ -181,7 +192,7 @@ public class ProfileActivity extends AppCompatActivity {
         SharedPreferences sp = getSharedPreferences("EYCPrefs", Context.MODE_PRIVATE);
 
         JsonObjectRequest missionListRequest = new JsonObjectRequest(Request.Method.GET,
-                "https://exploreyourcity.xyz/api/players/" + sp.getString("USER_ID", "-1") + "/score/",
+                "https://exploreyourcity.xyz/api/players/" + sp.getString("PLAYER_ID", "-1") + "/score/",
                 null,
                 new Response.Listener<JSONObject>() {
                     @Override
