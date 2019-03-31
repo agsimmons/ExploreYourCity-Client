@@ -101,12 +101,65 @@ public class MissionDetailActivity extends AppCompatActivity {
 
         // Get list of objectives belonging to selected mission, and add them to a recycler view
         getObjectives(missionID);
-
-        // Fill out objective recycler view
-//        initObjectiveRecyclerView();
     }
 
     private void dropMission() {
+        JsonObjectRequest registerRequest = new JsonObjectRequest(Request.Method.GET,
+                "https://exploreyourcity.xyz/api/missions/" + Integer.toString(missionID) + "/drop/", // TODO: Replace hardcoded api root
+                null,
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.i("RequestResponse", "Made a call to https://exploreyourcity.xyz/api/missions/" + Integer.toString(missionID) + "/drop/");
+
+                        terminateActivity(); // TODO: Refresh available mission list so user can't get back to this page
+                    }
+
+                },
+                new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Request Error", "Made a call to https://exploreyourcity.xyz/api/missions/" + Integer.toString(missionID) + "/drop/");
+                        Log.e("Request Error", error.getMessage());
+                    }
+
+                }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                SharedPreferences sp = getSharedPreferences("EYCPrefs", Context.MODE_PRIVATE);
+
+                String creds = String.format("%s:%s", sp.getString("USERNAME", ""), sp.getString("PASSWORD", ""));
+                String base64EncodedCredentials = Base64.encodeToString(creds.getBytes(), Base64.NO_WRAP);
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Basic " + base64EncodedCredentials);
+                return headers;
+            }
+
+            // Make it not error on an empty response
+            @Override
+            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+                try {
+                    String jsonString = new String(response.data,
+                            HttpHeaderParser.parseCharset(response.headers, PROTOCOL_CHARSET));
+
+                    JSONObject result = null;
+
+                    if (jsonString != null && jsonString.length() > 0)
+                        result = new JSONObject(jsonString);
+
+                    return Response.success(result,
+                            HttpHeaderParser.parseCacheHeaders(response));
+                } catch (UnsupportedEncodingException e) {
+                    return Response.error(new ParseError(e));
+                } catch (JSONException je) {
+                    return Response.error(new ParseError(je));
+                }
+            }
+        };
+        RequestQueueSingleton.getInstance(getApplicationContext()).
+                addToRequestQueue(registerRequest);
     }
 
     private void getObjectives(int missionID) {
@@ -180,15 +233,6 @@ public class MissionDetailActivity extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                         Log.e("Request Error", "Made a call to https://exploreyourcity.xyz/api/missions/" + Integer.toString(missionID) + "/start/");
                         Log.e("Request Error", error.getMessage());
-
-                        NetworkResponse networkResponse = error.networkResponse;
-                        if (networkResponse != null && networkResponse.statusCode == 409) {
-                            Utilities.makeToast(getApplicationContext(), "This mission is already started");
-                        } else {
-                            Utilities.makeToast(getApplicationContext(), "There was an error with your request");
-                        }
-
-
                     }
 
                 }) {
