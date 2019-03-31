@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/parent_layout">
+
+    <ImageView
+        android:id="@+id/friendImageView"
+        android:layout_width="111dp"
+        android:layout_height="84dp"
+        tools:srcCompat="@drawable/eyclogo" />
+
+    <TextView
+        android:id="@+id/friendUsernameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_toRightOf="@+id/friendImageView"
+        android:text="Username"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/frientPointsTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/friendUsernameTextView"
+        android:layout_toRightOf="@+id/friendImageView"
+        android:text="0 pts"
+        android:textSize="20sp"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp"/>
+</RelativeLayout>

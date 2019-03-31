@@ -55,15 +55,23 @@ public class ProfileActivity extends AppCompatActivity {
         missionsCompleteTextView = (TextView) findViewById(R.id.profile_activity_num_missions_complete_textview);
         getNumCompletedMissions();
 
-        // TODO: make these do something
+        // TODO: make this do something
         Button completedMissionsButton = (Button) findViewById(R.id.profile_activity_completed_missions_button);
+
         Button friendsListButton = (Button) findViewById(R.id.profile_activity_friends_list_button);
+        friendsListButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent friendsListIntent = new Intent(getApplicationContext(),
+                        FriendListActivity.class);
+                startActivity(friendsListIntent);
+            }
+        });
 
         // Setup the Delete Account Dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Delete account?");
         builder.setMessage("Are you sure you want to delete your account? This is irreversible!");
-
         builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
