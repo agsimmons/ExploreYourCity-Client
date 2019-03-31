@@ -70,7 +70,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             @Override
             public void onClick(View v) {
                 Intent availableMissionListIntent = new Intent(getApplicationContext(),
-                        AvailableMissionListActivity.class);
+                        MissionListActivity.class);
                 startActivity(availableMissionListIntent);
             }
         });

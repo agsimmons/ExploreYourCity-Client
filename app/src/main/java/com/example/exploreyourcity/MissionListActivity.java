@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AvailableMissionListActivity extends AppCompatActivity implements MissionAdapter.OnMissionListener {
+public class MissionListActivity extends AppCompatActivity implements MissionAdapter.OnMissionListener {
 
     private ArrayList<Mission> missions;
     private RecyclerView recyclerView;
@@ -35,7 +35,7 @@ public class AvailableMissionListActivity extends AppCompatActivity implements M
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_available_mission_list);
+        setContentView(R.layout.activity_mission_list);
 
         getMissionList();
     }
@@ -118,7 +118,7 @@ public class AvailableMissionListActivity extends AppCompatActivity implements M
 
     private void initRecyclerView() {
         // Add list elements to RecyclerView
-        recyclerView = findViewById(R.id.available_mission_list_recycler_view);
+        recyclerView = findViewById(R.id.mission_list_recycler_view);
         missionAdapter = new MissionAdapter(missions, this);
         recyclerView.setAdapter(missionAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
