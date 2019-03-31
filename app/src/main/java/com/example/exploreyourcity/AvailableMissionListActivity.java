@@ -44,7 +44,7 @@ public class AvailableMissionListActivity extends AppCompatActivity implements M
     private void getMissionList() {
 
         StringRequest missionListRequest = new StringRequest(Request.Method.POST,
-                "https://exploreyourcity.xyz/api/missions/available/",
+                "https://exploreyourcity.xyz/api/missions/available/", // TODO: Replace hardcoded api root
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String stringResponse) {
