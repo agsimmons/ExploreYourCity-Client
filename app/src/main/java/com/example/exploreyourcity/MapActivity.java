@@ -37,7 +37,19 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         mapFragment = (SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        // Set onClickListenter for Available Missions button
+        // Set onClickListener for Active Missions button
+        Button activeMissionListButton = (Button) findViewById(R.id.map_activity_active_mission_list_button);
+        activeMissionListButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent availableMissionListIntent = new Intent(getApplicationContext(),
+                        MissionListActivity.class);
+                availableMissionListIntent.putExtra("MODE", "CURRENT");
+                startActivity(availableMissionListIntent);
+            }
+        });
+
+        // Set onClickListener for Available Missions button
         Button availableMissionListButton = (Button) findViewById(R.id.map_activity_available_mission_list_button);
         availableMissionListButton.setOnClickListener(new View.OnClickListener() {
             @Override
