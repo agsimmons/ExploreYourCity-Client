@@ -44,21 +44,25 @@ public class MissionDetailActivity extends AppCompatActivity {
     // AVAILABLE - Allows user to add the mission
     // CURRENT - Allows user to drop the mission
     // COMPLETED - Disables the button
-
     private String mode;
 
     private ArrayList<Objective> objectives;
     private RecyclerView recyclerView;
-    private ObjectiveAdapter objectiveAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mission_detail);
 
-        // TODO: Error if missionID is -1, indicating that a mission ID was not passed
+        // Error if mission ID is not passed
         missionID = getIntent().getIntExtra("MISSION_ID", -1);
+        if (missionID == -1) {
+            Log.e(TAG, "MISSION_ID preference was not passed");
+            Utilities.makeToast(getApplicationContext(), "Invalid Mission!");
+            finish();
+        }
 
+        // Get the mode to run this activity as and the mission detail activity as
         mode = getIntent().getStringExtra("MODE");
 
         // Assign button text and functionality
@@ -322,23 +326,4 @@ public class MissionDetailActivity extends AppCompatActivity {
         RequestQueueSingleton.getInstance(getApplicationContext()).
                 addToRequestQueue(registerRequest);
     }
-
-//    private void initObjectiveRecyclerView() {
-//        // Add list elements to RecyclerView
-//        recyclerView = findViewById(R.id.available_mission_list_recycler_view);
-//        objectiveAdapter = new ObjectiveAdapter(objectives, this);
-//        recyclerView.setAdapter(objectiveAdapter);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-//    }
-
-//    @Override
-//    public void onMissionClick(int position) {
-//        // Switch to intent here
-//        Mission mission = missions.get(position);
-//        Log.d("Recycler", "Clicked on mission " + mission.toString());
-//
-//        Intent missionDetailIntent = new Intent(getApplicationContext(), MissionDetailActivity.class);
-//        missionDetailIntent.putExtra("MISSION_ID", mission.getId());
-//        startActivity(missionDetailIntent);
-//    }
 }
