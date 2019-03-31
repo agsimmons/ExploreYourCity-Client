@@ -17,6 +17,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -24,8 +25,9 @@ import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
 
-    static String username;
-    static String password;
+    private static String username;
+    private static String password;
+    private static String user_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,11 +57,19 @@ public class LoginActivity extends AppCompatActivity {
                             public void onResponse(JSONObject response) {
                                 Log.i("RequestResponse", response.toString());
 
+                                // Grab User ID number from response
+                                try {
+                                    user_id = response.getString("id");
+                                } catch (JSONException e){
+                                    Log.i("RequestResponse", "ID value not in json response!");
+                                }
+
                                 // Store credentials on disk
                                 SharedPreferences.Editor sp_editor = getSharedPreferences("EYCPrefs", Context.MODE_PRIVATE).edit();
                                 if (response.has("username")) {
                                     sp_editor.putString("USERNAME", username);
                                     sp_editor.putString("PASSWORD", password);
+                                    sp_editor.putString("USER_ID", user_id);
                                     sp_editor.apply();
                                 }
 
