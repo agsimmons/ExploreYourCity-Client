@@ -55,8 +55,19 @@ public class ProfileActivity extends AppCompatActivity {
         missionsCompleteTextView = (TextView) findViewById(R.id.profile_activity_num_missions_complete_textview);
         getNumCompletedMissions();
 
-        // TODO: make these do something
+        // TODO: make this do something
         Button completedMissionsButton = (Button) findViewById(R.id.profile_activity_completed_missions_button);
+
+        completedMissionsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent completedMissionListIntent = new Intent(getApplicationContext(),
+                        MissionListActivity.class);
+                completedMissionListIntent.putExtra("MODE", "COMPLETED");
+                startActivity(completedMissionListIntent);
+            }
+        });
+
         Button friendsListButton = (Button) findViewById(R.id.profile_activity_friends_list_button);
 
         // Setup the Delete Account Dialog
