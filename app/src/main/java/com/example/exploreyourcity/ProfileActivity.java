@@ -144,7 +144,7 @@ public class ProfileActivity extends AppCompatActivity {
         SharedPreferences sp = getSharedPreferences("EYCPrefs", Context.MODE_PRIVATE);
 
         JsonArrayRequest missionListRequest = new JsonArrayRequest(Request.Method.GET,
-                "https://exploreyourcity.xyz/api/players/"+sp.getString("USER_ID", "0")+"/completed_missions/",
+                "https://exploreyourcity.xyz/api/players/" + sp.getString("PLAYER_ID", "0") + "/completed_missions/",
                 null,
                 new Response.Listener<JSONArray>() {
                     @Override
@@ -181,7 +181,7 @@ public class ProfileActivity extends AppCompatActivity {
         SharedPreferences sp = getSharedPreferences("EYCPrefs", Context.MODE_PRIVATE);
 
         JsonObjectRequest missionListRequest = new JsonObjectRequest(Request.Method.GET,
-                "https://exploreyourcity.xyz/api/players/" + sp.getString("USER_ID", "-1") + "/score/",
+                "https://exploreyourcity.xyz/api/players/" + sp.getString("PLAYER_ID", "-1") + "/score/",
                 null,
                 new Response.Listener<JSONObject>() {
                     @Override
