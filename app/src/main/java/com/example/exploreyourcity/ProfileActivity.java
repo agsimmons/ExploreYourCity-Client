@@ -51,7 +51,7 @@ public class ProfileActivity extends AppCompatActivity {
         pointsTextView = (TextView) findViewById(R.id.profile_activity_points_textview);
         getPoints();
 
-        // Populate Missions Comeplete Number textView
+        // Populate Missions Complete Number textView
         missionsCompleteTextView = (TextView) findViewById(R.id.profile_activity_num_missions_complete_textview);
         getNumCompletedMissions();
 
@@ -66,6 +66,7 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
+        // TODO: make this do something
         Button friendsListButton = (Button) findViewById(R.id.profile_activity_friends_list_button);
         friendsListButton.setOnClickListener(new View.OnClickListener() {
             @Override
