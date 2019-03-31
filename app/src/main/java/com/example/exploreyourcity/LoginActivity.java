@@ -3,8 +3,8 @@ package com.example.exploreyourcity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -27,7 +27,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private static String username;
     private static String password;
-    private static String user_id;
+    private static String player_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                 // Grab User ID number from response
                                 try {
-                                    user_id = response.getString("id");
+                                    player_id = response.getString("id");
                                 } catch (JSONException e){
                                     Log.i("RequestResponse", "ID value not in json response!");
                                 }
@@ -69,7 +69,7 @@ public class LoginActivity extends AppCompatActivity {
                                 if (response.has("username")) {
                                     sp_editor.putString("USERNAME", username);
                                     sp_editor.putString("PASSWORD", password);
-                                    sp_editor.putString("USER_ID", user_id);
+                                    sp_editor.putString("PLAYER_ID", player_id);
                                     sp_editor.apply();
                                 }
 
