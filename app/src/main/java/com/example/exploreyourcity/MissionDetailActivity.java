@@ -2,8 +2,8 @@ package com.example.exploreyourcity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
@@ -21,7 +21,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.example.exploreyourcity.adapters.MissionAdapter;
 import com.example.exploreyourcity.adapters.ObjectiveAdapter;
 import com.example.exploreyourcity.models.Mission;
 import com.example.exploreyourcity.models.Objective;
