@@ -25,7 +25,7 @@ public class Mission {
     }
 
     public String getName() {
-        return this.category.getName() + " " + this.id;
+        return this.category.getName() + " #" + this.id;
     }
 
     public int getId() {
