@@ -28,7 +28,10 @@ import java.util.Map;
 
 public class MissionListActivity extends AppCompatActivity implements MissionAdapter.OnMissionListener {
 
+    private static final String TAG = "MissionListActivity";
+
     private String mode;
+    private String player_id;
 
     private ArrayList<Mission> missions;
     private RecyclerView recyclerView;
@@ -41,13 +44,34 @@ public class MissionListActivity extends AppCompatActivity implements MissionAda
 
         mode = getIntent().getStringExtra("MODE");
 
+        SharedPreferences sp = getSharedPreferences("EYCPrefs", Context.MODE_PRIVATE);
+        player_id = sp.getString("PLAYER_ID", "");
+
         getMissionList();
     }
 
     private void getMissionList() {
 
-        StringRequest missionListRequest = new StringRequest(Request.Method.POST,
-                "https://exploreyourcity.xyz/api/missions/available/", // TODO: Replace hardcoded api root
+        String apiRoot = "https://exploreyourcity.xyz/api/"; // TODO: Replace hardcoded api root
+
+        String endpoint = "";
+        int method = 0;
+        if (mode.equals("AVAILABLE")) {
+            endpoint = apiRoot + "/missions/available/";
+            method = Request.Method.POST;
+        } else if (mode.equals("CURRENT")) {
+            endpoint = apiRoot + "/players/" + player_id + "/active_missions/";
+            method = Request.Method.GET;
+        } else if (mode.equals("COMPLETED")) {
+            endpoint = apiRoot + "/players/" + player_id + "/completed_missions/";
+            method = Request.Method.GET;
+        } else {
+            Log.e(TAG, "Invalid Mode");
+            finish();
+        }
+
+        StringRequest missionListRequest = new StringRequest(method,
+                endpoint,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String stringResponse) {
