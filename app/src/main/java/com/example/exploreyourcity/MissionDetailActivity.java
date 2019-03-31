@@ -58,8 +58,13 @@ public class MissionDetailActivity extends AppCompatActivity {
 
                         Mission mission = new Mission(response);
 
+                        // Set title
                         TextView missionDetailTitle = (TextView) findViewById(R.id.mission_detail_title);
                         missionDetailTitle.setText(mission.getName());
+
+                        // Set point value
+                        TextView missionDetailPoints = (TextView) findViewById(R.id.mission_detail_value);
+                        missionDetailPoints.setText(Integer.toString(mission.getValue()) + " points");
                     }
 
                 },
