@@ -14,9 +14,14 @@ import android.view.View;
 import android.widget.Button;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.ParseError;
+import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.exploreyourcity.models.Objective;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -28,7 +33,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -135,9 +142,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         gMap.clear();
 
         // Add user location to map and move camera to focus on it
+        final Double playerLatitude = Double.parseDouble(sp.getString("CURRENT_LATITUDE", "90.0"));
+        final Double playerLongitude = Double.parseDouble(sp.getString("CURRENT_LONGITUDE", "90.0"));
         LatLng player = new LatLng(
-                Double.parseDouble(sp.getString("CURRENT_LATITUDE", "90.0")),
-                Double.parseDouble(sp.getString("CURRENT_LONGITUDE", "90.0")));
+                playerLatitude,
+                playerLongitude);
         gMap.addMarker(new MarkerOptions().position(player).title("Current Location"));
         gMap.moveCamera(CameraUpdateFactory.newLatLng(player));
         gMap.moveCamera(CameraUpdateFactory.zoomTo(17));
@@ -160,7 +169,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                                     playerLongitude) <= Constants.OBJECTIVE_COMPLETE_RADIUS) {
 
                                     completeObjective(objective);
-
+                                    
                                     gMap.addMarker(new MarkerOptions().position(objectiveLatLng).title("Complete: " + objective.getName()));
                                 } else {
                                     gMap.addMarker(new MarkerOptions().position(objectiveLatLng).title("Incomplete: " + objective.getName()));
@@ -232,6 +241,64 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         RequestQueueSingleton.getInstance(getApplicationContext()).
                 addToRequestQueue(completedObjectiveListRequest);
+    }
+
+    private void completeObjective(Objective objective) {
+        JsonObjectRequest objectiveCompleteRequest = new JsonObjectRequest(Request.Method.GET,
+                "https://exploreyourcity.xyz/api/objectives/" + objective.getId() + "/complete/", // TODO: Replace hardcoded api root
+                null,
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Utilities.makeToast(getApplicationContext(), "You completed an objective!");
+                        // TODO: Play sound
+                    }
+
+                },
+                new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Request Error", new String(error.networkResponse.data));
+                        Utilities.makeToast(getApplicationContext(), "There was an error with your request");
+                    }
+
+                }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                SharedPreferences sp = getSharedPreferences("EYCPrefs", Context.MODE_PRIVATE);
+
+                String creds = String.format("%s:%s", sp.getString("USERNAME", ""), sp.getString("PASSWORD", ""));
+                String base64EncodedCredentials = Base64.encodeToString(creds.getBytes(), Base64.NO_WRAP);
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Basic " + base64EncodedCredentials);
+                return headers;
+            }
+
+            // Make it not error on an empty response
+            @Override
+            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+                try {
+                    String jsonString = new String(response.data,
+                            HttpHeaderParser.parseCharset(response.headers, PROTOCOL_CHARSET));
+
+                    JSONObject result = null;
+
+                    if (jsonString != null && jsonString.length() > 0)
+                        result = new JSONObject(jsonString);
+
+                    return Response.success(result,
+                            HttpHeaderParser.parseCacheHeaders(response));
+                } catch (UnsupportedEncodingException e) {
+                    return Response.error(new ParseError(e));
+                } catch (JSONException je) {
+                    return Response.error(new ParseError(je));
+                }
+            }
+        };
+        RequestQueueSingleton.getInstance(getApplicationContext()).
+                addToRequestQueue(objectiveCompleteRequest);
     }
 
     @Override
