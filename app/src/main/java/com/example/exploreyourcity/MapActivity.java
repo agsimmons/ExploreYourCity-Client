@@ -41,6 +41,8 @@ import java.util.Map;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
+    private static final String TAG = "MapActivity";
+
     private LocationManager locationManager;
     private LocationListener locationListener;
 
@@ -123,7 +125,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             }
         };
         try {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, locationListener);
         } catch (SecurityException e) {
             e.printStackTrace();
         }
@@ -183,6 +185,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        Log.e(TAG, "Request error in activeObjectiveListRequest");
                         Utilities.makeToast(getApplicationContext(), "There was an error with your request");
                     }
                 }) {
@@ -222,7 +225,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.e("Request Error", new String(error.networkResponse.data));
+                        Log.e(TAG, "Request error in completedObjectiveListRequest");
                         Utilities.makeToast(getApplicationContext(), "There was an error with your request");
                     }
                 }) {
