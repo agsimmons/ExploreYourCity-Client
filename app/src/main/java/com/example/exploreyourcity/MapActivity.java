@@ -169,7 +169,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                                     playerLongitude) <= Constants.OBJECTIVE_COMPLETE_RADIUS) {
 
                                     completeObjective(objective);
-                                    
+
                                     gMap.addMarker(new MarkerOptions().position(objectiveLatLng).title("Complete: " + objective.getName()));
                                 } else {
                                     gMap.addMarker(new MarkerOptions().position(objectiveLatLng).title("Incomplete: " + objective.getName()));
@@ -183,7 +183,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.e("Request Error", new String(error.networkResponse.data));
                         Utilities.makeToast(getApplicationContext(), "There was an error with your request");
                     }
                 }) {
@@ -213,7 +212,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                             for (int i = 0; i < response.length(); i++) {
                                 Objective objective = new Objective(response.getJSONObject(i));
                                 LatLng objectiveLatLng = new LatLng(objective.getLatitude(), objective.getLongitude());
-                                gMap.addMarker(new MarkerOptions().position(objectiveLatLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.objective_complete)).title("Completed: " + objective.getName()));
+                                gMap.addMarker(new MarkerOptions().position(objectiveLatLng).title("Completed: " + objective.getName()));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -260,7 +259,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.e("Request Error", new String(error.networkResponse.data));
                         Utilities.makeToast(getApplicationContext(), "There was an error with your request");
                     }
 
