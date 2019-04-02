@@ -12,7 +12,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ProfileActivity"></activity>
+        <activity android:name=".FriendProfileActivity"></activity>
+        <activity android:name=".RequestsListActivity" />
+        <activity android:name=".FriendsListActivity" />
+        <activity android:name=".ProfileActivity" />
         <activity android:name=".MissionDetailActivity" />
         <activity android:name=".MissionListActivity" />
         <activity android:name=".LoginActivity" />
@@ -24,15 +27,11 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <!-- needed per https://stackoverflow.com/questions/50461881/java-lang-noclassdeffounderrorfailed-resolution-of-lorg-apache-http-protocolve -->
+        </activity> <!-- needed per https://stackoverflow.com/questions/50461881/java-lang-noclassdeffounderrorfailed-resolution-of-lorg-apache-http-protocolve -->
         <!-- TODO: Verify that we need this -->
         <uses-library
             android:name="org.apache.http.legacy"
-            android:required="false" />
-
-        <!-- Our Google Maps API key -->
+            android:required="false" /> <!-- Our Google Maps API key -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDHqBdySdfEGwzje_-LFwMbv7R5PLWnTac" />

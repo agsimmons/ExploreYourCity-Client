@@ -55,7 +55,6 @@ public class ProfileActivity extends AppCompatActivity {
         missionsCompleteTextView = (TextView) findViewById(R.id.profile_activity_num_missions_complete_textview);
         getNumCompletedMissions();
 
-
         Button completedMissionsButton = (Button) findViewById(R.id.profile_activity_completed_missions_button);
         completedMissionsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,8 +66,16 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        // TODO: make this do something
         Button friendsListButton = (Button) findViewById(R.id.profile_activity_friends_list_button);
+        friendsListButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent friendsListIntent = new Intent(getApplicationContext(),
+                        FriendsListActivity.class);
+                friendsListIntent.putExtra("MODE", "FRIEND");
+                startActivity(friendsListIntent);
+            }
+        });
 
         // Setup the Delete Account Dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
