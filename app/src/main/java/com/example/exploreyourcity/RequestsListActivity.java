@@ -112,6 +112,7 @@ public class RequestsListActivity extends AppCompatActivity implements FriendReq
 
         Intent friendRequestIntent = new Intent(getApplicationContext(), RequestListDetail.class);
         friendRequestIntent.putExtra("REQUEST_ID", friendRequest.getId());
+        friendRequestIntent.putExtra("REQUEST_FROM_USERNAME", friendRequest.getFrom().getUsername());
         startActivity(friendRequestIntent);
 
     }
