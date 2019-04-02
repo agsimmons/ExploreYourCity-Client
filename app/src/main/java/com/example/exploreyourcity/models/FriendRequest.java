@@ -5,9 +5,9 @@ import org.json.JSONObject;
 
 public class FriendRequest {
     private int id;
-    private int from;
+    private Friend from;
 
-    public FriendRequest(int id, int from) {
+    public FriendRequest(int id, Friend from) {
         this.id = id;
         this.from = from;
     }
@@ -15,7 +15,7 @@ public class FriendRequest {
     public FriendRequest(JSONObject friendRequest) {
         try {
             this.id = friendRequest.getInt("id");
-            this.from = friendRequest.getInt("request_from");
+            this.from = new Friend(friendRequest.getJSONObject("request_from"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -25,7 +25,7 @@ public class FriendRequest {
         return this.id;
     }
 
-    public int getFrom() {
+    public Friend getFrom() {
         return this.from;
     }
 
