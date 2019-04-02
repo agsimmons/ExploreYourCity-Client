@@ -87,6 +87,16 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
+        Button sendFriendRequestButton = (Button) findViewById(R.id.profile_activity_send_friend_request_button);
+        sendFriendRequestButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent sendFriendRequestIntent = new Intent(getApplicationContext(),
+                        SendFriendRequestActivity.class);
+                startActivity(sendFriendRequestIntent);
+            }
+        });
+
         // Setup the Delete Account Dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Delete account?");
