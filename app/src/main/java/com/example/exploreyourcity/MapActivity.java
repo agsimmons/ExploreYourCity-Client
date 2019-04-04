@@ -172,9 +172,13 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
                                     completeObjective(objective);
 
-                                    gMap.addMarker(new MarkerOptions().position(objectiveLatLng).title("Complete: " + objective.getName()));
+                                    //gMap.addMarker(new MarkerOptions().position(objectiveLatLng).title("Complete: " + objective.getName()));
+                                    MarkerOptions marker = new MarkerOptions().position(objectiveLatLng).title("Complete: " + objective.getName()).icon(BitmapDescriptorFactory.fromResource(R.drawable.objective_complete));
+                                    gMap.addMarker(marker);
                                 } else {
-                                    gMap.addMarker(new MarkerOptions().position(objectiveLatLng).title("Incomplete: " + objective.getName()));
+                                    //gMap.addMarker(new MarkerOptions().position(objectiveLatLng).title("Incomplete: " + objective.getName()));
+                                    MarkerOptions marker = new MarkerOptions().position(objectiveLatLng).title("Incomplete: " + objective.getName()).icon(BitmapDescriptorFactory.fromResource(R.drawable.objective_active));
+                                    gMap.addMarker(marker);
                                 }
                             }
                         } catch (JSONException e) {
