@@ -12,7 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".FriendProfileActivity"></activity>
+        <activity android:name=".SendFriendRequestActivity"></activity>
+        <activity android:name=".RequestListDetail" />
+        <activity android:name=".FriendProfileActivity" />
         <activity android:name=".RequestsListActivity" />
         <activity android:name=".FriendsListActivity" />
         <activity android:name=".ProfileActivity" />

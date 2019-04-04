@@ -106,7 +106,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 sp_editor.putString("CURRENT_LONGITUDE", "" +  location.getLongitude());
                 sp_editor.apply();
                 
-                updatePlayerLocation();
+                //updatePlayerLocation();
             }
 
             @Override
