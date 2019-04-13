@@ -144,8 +144,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         gMap.clear();
 
         // Add user location to map and move camera to focus on it
-        final Double playerLatitude = Double.parseDouble(sp.getString("CURRENT_LATITUDE", "90.0"));
-        final Double playerLongitude = Double.parseDouble(sp.getString("CURRENT_LONGITUDE", "90.0"));
+        final Double playerLatitude = Double.parseDouble(sp.getString("CURRENT_LATITUDE", "42.336114"));
+        final Double playerLongitude = Double.parseDouble(sp.getString("CURRENT_LONGITUDE", "-71.095412"));
         LatLng player = new LatLng(
                 playerLatitude,
                 playerLongitude);
@@ -324,8 +324,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private void setMapLocationToPlayer() {
         SharedPreferences sp = getSharedPreferences("EYCPrefs", Context.MODE_PRIVATE);
 
-        Double playerLatitude = Double.parseDouble(sp.getString("CURRENT_LATITUDE", "90.0"));
-        Double playerLongitude = Double.parseDouble(sp.getString("CURRENT_LONGITUDE", "90.0"));
+        Double playerLatitude = Double.parseDouble(sp.getString("CURRENT_LATITUDE", "42.336114"));
+        Double playerLongitude = Double.parseDouble(sp.getString("CURRENT_LONGITUDE", "-71.095412"));
         LatLng player = new LatLng(
                 playerLatitude,
                 playerLongitude);
