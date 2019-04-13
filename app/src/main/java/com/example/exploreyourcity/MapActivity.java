@@ -312,25 +312,25 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         myLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                SharedPreferences sp = getSharedPreferences("EYCPrefs", Context.MODE_PRIVATE);
-
-                Double playerLatitude = Double.parseDouble(sp.getString("CURRENT_LATITUDE", "90.0"));
-                Double playerLongitude = Double.parseDouble(sp.getString("CURRENT_LONGITUDE", "90.0"));
-                LatLng player = new LatLng(
-                        playerLatitude,
-                        playerLongitude);
-                gMap.moveCamera(CameraUpdateFactory.newLatLng(player));
-                gMap.moveCamera(CameraUpdateFactory.zoomTo(17));
-
+                setMapLocationToPlayer();
             }
         });
 
-        // Create a marker for Wentworth
-        LatLng test1 = new LatLng(42.3361, -71.0954);
-        googleMap.addMarker(new MarkerOptions().position(test1).title("Wentworth"));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(test1));
-        googleMap.moveCamera(CameraUpdateFactory.zoomTo(17));
+        updatePlayerLocation();
+
+        setMapLocationToPlayer();
+    }
+
+    private void setMapLocationToPlayer() {
+        SharedPreferences sp = getSharedPreferences("EYCPrefs", Context.MODE_PRIVATE);
+
+        Double playerLatitude = Double.parseDouble(sp.getString("CURRENT_LATITUDE", "90.0"));
+        Double playerLongitude = Double.parseDouble(sp.getString("CURRENT_LONGITUDE", "90.0"));
+        LatLng player = new LatLng(
+                playerLatitude,
+                playerLongitude);
+        gMap.moveCamera(CameraUpdateFactory.newLatLng(player));
+        gMap.moveCamera(CameraUpdateFactory.zoomTo(17));
     }
 
 }
