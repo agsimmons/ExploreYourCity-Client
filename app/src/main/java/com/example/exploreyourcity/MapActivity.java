@@ -144,14 +144,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         gMap.clear();
 
         // Add user location to map and move camera to focus on it
-        final Double playerLatitude = Double.parseDouble(sp.getString("CURRENT_LATITUDE", "90.0"));
-        final Double playerLongitude = Double.parseDouble(sp.getString("CURRENT_LONGITUDE", "90.0"));
+        final Double playerLatitude = Double.parseDouble(sp.getString("CURRENT_LATITUDE", "42.336114"));
+        final Double playerLongitude = Double.parseDouble(sp.getString("CURRENT_LONGITUDE", "-71.095412"));
         LatLng player = new LatLng(
                 playerLatitude,
                 playerLongitude);
         gMap.addMarker(new MarkerOptions().position(player).title("Current Location"));
-        gMap.moveCamera(CameraUpdateFactory.newLatLng(player));
-        gMap.moveCamera(CameraUpdateFactory.zoomTo(17));
 
         // Add active objectives to map
         JsonArrayRequest activeObjectiveListRequest = new JsonArrayRequest("https://exploreyourcity.xyz/api/players/" + sp.getString("PLAYER_ID", "") + "/active_objectives/",
@@ -172,11 +170,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
                                     completeObjective(objective);
 
-                                    //gMap.addMarker(new MarkerOptions().position(objectiveLatLng).title("Complete: " + objective.getName()));
                                     MarkerOptions marker = new MarkerOptions().position(objectiveLatLng).title("Complete: " + objective.getName()).icon(BitmapDescriptorFactory.fromResource(R.drawable.objective_complete));
                                     gMap.addMarker(marker);
                                 } else {
-                                    //gMap.addMarker(new MarkerOptions().position(objectiveLatLng).title("Incomplete: " + objective.getName()));
                                     MarkerOptions marker = new MarkerOptions().position(objectiveLatLng).title("Incomplete: " + objective.getName()).icon(BitmapDescriptorFactory.fromResource(R.drawable.objective_active));
                                     gMap.addMarker(marker);
                                 }
@@ -219,7 +215,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                             for (int i = 0; i < response.length(); i++) {
                                 Objective objective = new Objective(response.getJSONObject(i));
                                 LatLng objectiveLatLng = new LatLng(objective.getLatitude(), objective.getLongitude());
-                                gMap.addMarker(new MarkerOptions().position(objectiveLatLng).title("Completed: " + objective.getName()));
+                                MarkerOptions marker = new MarkerOptions().position(objectiveLatLng).title("Complete: " + objective.getName()).icon(BitmapDescriptorFactory.fromResource(R.drawable.objective_complete));
+                                gMap.addMarker(marker);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -310,11 +307,30 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         gMap = googleMap;
 
-        // Create a marker for Wentworth
-        LatLng test1 = new LatLng(42.3361, -71.0954);
-        googleMap.addMarker(new MarkerOptions().position(test1).title("Wentworth"));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(test1));
-        googleMap.moveCamera(CameraUpdateFactory.zoomTo(17));
+        // Add functionality to MyLocation button
+        Button myLocationButton = (Button) findViewById(R.id.map_activity_mylocation_button);
+        myLocationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setMapLocationToPlayer();
+            }
+        });
+
+        updatePlayerLocation();
+
+        setMapLocationToPlayer();
+    }
+
+    private void setMapLocationToPlayer() {
+        SharedPreferences sp = getSharedPreferences("EYCPrefs", Context.MODE_PRIVATE);
+
+        Double playerLatitude = Double.parseDouble(sp.getString("CURRENT_LATITUDE", "42.336114"));
+        Double playerLongitude = Double.parseDouble(sp.getString("CURRENT_LONGITUDE", "-71.095412"));
+        LatLng player = new LatLng(
+                playerLatitude,
+                playerLongitude);
+        gMap.moveCamera(CameraUpdateFactory.newLatLng(player));
+        gMap.moveCamera(CameraUpdateFactory.zoomTo(17));
     }
 
 }
