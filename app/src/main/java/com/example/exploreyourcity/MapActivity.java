@@ -172,11 +172,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
                                     completeObjective(objective);
 
-                                    //gMap.addMarker(new MarkerOptions().position(objectiveLatLng).title("Complete: " + objective.getName()));
                                     MarkerOptions marker = new MarkerOptions().position(objectiveLatLng).title("Complete: " + objective.getName()).icon(BitmapDescriptorFactory.fromResource(R.drawable.objective_complete));
                                     gMap.addMarker(marker);
                                 } else {
-                                    //gMap.addMarker(new MarkerOptions().position(objectiveLatLng).title("Incomplete: " + objective.getName()));
                                     MarkerOptions marker = new MarkerOptions().position(objectiveLatLng).title("Incomplete: " + objective.getName()).icon(BitmapDescriptorFactory.fromResource(R.drawable.objective_active));
                                     gMap.addMarker(marker);
                                 }
@@ -219,7 +217,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                             for (int i = 0; i < response.length(); i++) {
                                 Objective objective = new Objective(response.getJSONObject(i));
                                 LatLng objectiveLatLng = new LatLng(objective.getLatitude(), objective.getLongitude());
-                                gMap.addMarker(new MarkerOptions().position(objectiveLatLng).title("Completed: " + objective.getName()));
+                                MarkerOptions marker = new MarkerOptions().position(objectiveLatLng).title("Complete: " + objective.getName()).icon(BitmapDescriptorFactory.fromResource(R.drawable.objective_complete));
+                                gMap.addMarker(marker);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
