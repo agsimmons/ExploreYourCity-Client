@@ -77,10 +77,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         availableMissionListButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent availableMissionListIntent = new Intent(getApplicationContext(),
-                        MissionListActivity.class);
-                availableMissionListIntent.putExtra("MODE", "AVAILABLE");
-                startActivity(availableMissionListIntent);
+                Intent categoryListIntent = new Intent(getApplicationContext(),
+                        CategoryListActivity.class);
+                startActivity(categoryListIntent);
             }
         });
 

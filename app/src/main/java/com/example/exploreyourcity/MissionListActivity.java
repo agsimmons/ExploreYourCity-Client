@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -32,6 +33,7 @@ public class MissionListActivity extends AppCompatActivity implements MissionAda
 
     private String mode;
     private String player_id;
+    private int categoryId = -1;
 
     private ArrayList<Mission> missions;
     private RecyclerView recyclerView;
@@ -59,6 +61,12 @@ public class MissionListActivity extends AppCompatActivity implements MissionAda
         if (mode.equals("AVAILABLE")) {
             endpoint = apiRoot + "/missions/available/";
             method = Request.Method.POST;
+            categoryId = getIntent().getIntExtra("CATEGORY_ID", -1);
+            if (categoryId == -1) {
+                finish();
+            }
+            TextView mission_list_available_mission_note = findViewById(R.id.mission_list_available_mission_note);
+            mission_list_available_mission_note.setText("Available missions are sorted by proximity to you");
         } else if (mode.equals("CURRENT")) {
             endpoint = apiRoot + "/players/" + player_id + "/active_missions/";
             method = Request.Method.GET;
@@ -95,7 +103,14 @@ public class MissionListActivity extends AppCompatActivity implements MissionAda
                             }
 
                             Mission mission = new Mission(missionData);
-                            missions.add(mission);
+                            if (categoryId != -1) {
+                                if (mission.getCategory().getId() == categoryId) {
+                                    missions.add(mission);
+                                }
+                            } else {
+                                missions.add(mission);
+                            }
+
 
                         }
 
